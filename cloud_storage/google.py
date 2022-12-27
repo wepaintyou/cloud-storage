@@ -9,8 +9,8 @@ class GCStorage:
     def set_bucket(self, bucket_name):
         self.bucket = self.client.get_bucket(bucket_name)
 
-    def upload_file(self, bucket, blob_destination, file_path):
-        blob = bucket.blob(blob_destination)
+    def upload_file(self, blob_destination, file_path):
+        blob = self.bucket.blob(blob_destination)
         blob.upload_from_filename(file_path)
     
     def download_file(self, destination_filename, blob_name):
