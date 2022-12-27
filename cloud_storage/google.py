@@ -1,7 +1,5 @@
 from google.cloud import storage
 
-STORAGE_CLASSES = ('STANDARD', 'NEARLINE', 'COLDLINE', 'ARCHIVE')
-
 class GCStorage:
     def __init__(self, storage_client):
         self.client = storage_client      
