@@ -2,25 +2,26 @@ from google.cloud import storage
 import os
 
 class GCStorage:
-    def __init__(self, project_id=None):
+    def __init__(self, bucket_name, project_id=None):
         self.client = storage.Client(project=project_id)
+        self.bucket = self.client.get_bucket(bucket_name)
 
-    def get_bucket(self, bucket_name):
-        return self.client.bucket(bucket_name)
+    def set_bucket(self, bucket_name):
+        self.bucket = self.client.get_bucket(bucket_name)
 
     def upload_file(self, bucket, blob_destination, file_path):
         blob = bucket.blob(blob_destination)
         blob.upload_from_filename(file_path)
     
-    def download_file(self, bucket, destination_filename, blob_name):
-        blob = bucket.blob(blob_name)
+    def download_file(self, destination_filename, blob_name):
+        blob = self.bucket.blob(blob_name)
         blob.download_to_filename(destination_filename)
 
-    def list_blobs(self, bucket, folder=None):
-        return bucket.list_blobs(prefix=folder)
+    def list_blobs(self, folder=None):
+        return self.bucket.list_blobs(prefix=folder)
 
-    def download_files_from_folder(self, bucket, folder, destination_folder):
-        blobs = self.list_blobs(bucket, folder)
+    def download_files_from_folder(self, folder, destination_folder):
+        blobs = self.list_blobs(self.bucket, folder)
         for blob in blobs:
             if not blob.name.endswith('/'):
                 # This blob is not a directory!
@@ -34,11 +35,8 @@ if __name__ == "__main__":
     project_id = "bionic-repeater-368120"
 
     # Construct GCStorage instance
-    gcs = GCStorage(project_id)
-
-    # Cloud Storage bucket
-    bucket_gcs = gcs.get_bucket(bucket_name)
+    gcs = GCStorage(bucket_name, project_id)
     
     # List files
-    blobs = gcs.list_blobs(bucket_gcs)
+    blobs = gcs.list_blobs()
     print([b for b in blobs])
