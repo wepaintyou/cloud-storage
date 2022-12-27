@@ -21,7 +21,7 @@ class GCStorage:
         return self.bucket.list_blobs(prefix=folder)
 
     def download_files_from_folder(self, folder, destination_folder):
-        blobs = self.list_blobs(self.bucket, folder)
+        blobs = self.list_blobs(folder)
         for blob in blobs:
             if not blob.name.endswith('/'):
                 # This blob is not a directory!
