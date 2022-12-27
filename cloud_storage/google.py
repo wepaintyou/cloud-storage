@@ -1,8 +1,9 @@
 from google.cloud import storage
+import os
 
 class GCStorage:
-    def __init__(self, storage_client):
-        self.client = storage_client      
+    def __init__(self, project_id=None):
+        self.client = storage.Client(project=project_id)
 
     def get_bucket(self, bucket_name):
         return self.client.bucket(bucket_name)
@@ -32,8 +33,7 @@ if __name__ == "__main__":
     project_id = "bionic-repeater-368120"
 
     # Construct GCStorage instance
-    storage_client = storage.Client(project=project_id)
-    gcs = GCStorage(storage_client)
+    gcs = GCStorage(project_id)
 
     # Cloud Storage bucket
     bucket_gcs = gcs.get_bucket(bucket_name)
