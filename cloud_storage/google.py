@@ -32,7 +32,6 @@ class GCStorage:
 
 
 if __name__ == "__main__":
-
     bucket_name = "dreambooth-bucket"
     project_id = "bionic-repeater-368120"
 
